@@ -7,7 +7,7 @@
   <li><a href="https://www.vgranville.com/2022/03/jackknife-and-linear-regression-in.html">Jackknife and linear regression in Excel: implementation and comparison</a> --> <a href="https://github.com/VincentGranville/Machine-Learning/blob/main/Spreadsheets/JobSkills_Python_R_SQL_Sec.xlsx">JobSkills_Python_R_SQL_Sec.xlsx</a></li>
   <li><a href="https://www.vgranville.com/2022/03/jackknife-logistic-and-linear.html">Jackknife logistic and linear regression for clustering and predictions</a> -->   <a href="https://github.com/VincentGranville/Machine-Learning/blob/main/Spreadsheets/Jack-rand3b.xlsx">Jack-rand3b.xlsx</a></li>
   <li><a href="https://www.vgranville.com/2022/03/bumpiness-coefficient.html">Bumpiness coefficient</a> --> <a href="https://github.com/VincentGranville/Machine-Learning/blob/main/Spreadsheets/analyticbridgetraining1.xlsx">analyticbridgetraining1.xlsx</a></li>
-  <li><a href="https://www.vgranville.com/2022/03/a-synthetic-variance-designed-for.html">Synthetic variance</a></li> (no spreadsheet)
+  <li><a href="https://www.vgranville.com/2022/03/a-synthetic-variance-designed-for.html">Synthetic variance</a> (no spreadsheet) </li>
 </ul>
 <b>Under restoration</b><br>
 <p>
