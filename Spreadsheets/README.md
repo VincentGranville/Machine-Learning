@@ -10,6 +10,7 @@
   <li><a href="https://www.vgranville.com/2022/03/a-synthetic-variance-designed-for.html">Synthetic variance</a> (no spreadsheet) </li>
   <li><a href="https://www.vgranville.com/2022/03/an-updated-version-with-source-code-and.html">How to build simple, accurate, data-driven, model-free confidence intervals</a> (no spreadsheet)
   <li><a href="https://www.vgranville.com/2022/03/fast-combinatorial-feature-selection.html">Fast Combinatorial Feature Selection with New Definition of Predictive Power</a> (no spreadsheet)</li>
+  <li><a href="https://www.vgranville.com/2022/03/hidden-decision-trees-revisited-2013.html">Hidden Decision Trees Revisited</a></li>
 </ul>
 <b>Under restoration</b><br>
 &nbsp;
