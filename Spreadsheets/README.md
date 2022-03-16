@@ -9,7 +9,7 @@
   <li><a href="https://www.vgranville.com/2022/03/bumpiness-coefficient.html">Bumpiness coefficient</a> --> <a href="https://github.com/VincentGranville/Machine-Learning/blob/main/Spreadsheets/analyticbridgetraining1.xlsx">analyticbridgetraining1.xlsx</a></li>
   <li><a href="https://www.vgranville.com/2022/03/a-synthetic-variance-designed-for.html">Synthetic variance</a> (no spreadsheet) </li>
   <li><a href="https://www.vgranville.com/2022/03/an-updated-version-with-source-code-and.html">How to build simple, accurate, data-driven, model-free confidence intervals</a> (no spreadsheet)
-  <li><a href="https://www.blogger.com/blog/post/edit/1272176599873119812/1400003687716513153">Fast Combinatorial Feature Selection with New Definition of Predictive Power</a> (no spreadsheet)</li>
+  <li><a href="https://www.vgranville.com/2022/03/fast-combinatorial-feature-selection.html">Fast Combinatorial Feature Selection with New Definition of Predictive Power</a> (no spreadsheet)</li>
 </ul>
 <b>Under restoration</b><br>
 &nbsp;
