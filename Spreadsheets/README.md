@@ -1,6 +1,6 @@
 <b>Mapping between past articles and spreadsheets</b>
 <p>
-  <b>Restored articles</b> 
+  <b>Semi-restored articles</b> 
 <ul>
   <li><a href="https://www.datasciencecentral.com/advanced-machine-learning-with-basic-excel/">Advanced Machine Learning with Basic Excel</a> --> 
   <a href="https://github.com/VincentGranville/Machine-Learning/blob/main/Spreadsheets/HDTdata3excelv3.xlsx">HDTdata3excelv3.xlsx</li>
@@ -10,13 +10,10 @@
   <li><a href="https://www.vgranville.com/2022/03/a-synthetic-variance-designed-for.html">Synthetic variance</a> (no spreadsheet) </li>
 </ul>
 <b>Under restoration</b><br>
+&nbsp;
 <p>
 https://web.archive.org/web/20141218151901/http://www.datasciencecentral.com/profiles/blogs/black-box-confidence-intervals-excel-and-perl-implementations-det<br>
 Black-box Confidence Intervals: Excel and Perl Implementation<br>
 https://www.vgranville.com/2022/03/black-box-confidence-intervals-excel.html<br>
 <p>
 
-
-https://web.archive.org/web/20141230033654/http://www.hadoop360.com/blog/a-synthetic-variance-designed-for-hadoop-and-big-data<br>
-A synthetic variance designed for Hadoop and big data<br>
-https://www.vgranville.com/2022/03/a-synthetic-variance-designed-for.html<br>
