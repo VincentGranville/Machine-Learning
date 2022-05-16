@@ -9,6 +9,9 @@
 # 5. Requires no technical knowledge beyond high school, but far from trivial!
 # 6. Exact predictions for training set, yet robust (no overfitting)
 # 7. Increasing M is "lazy way" to boost performance, but it slows speed
+# 8. Acts as low-pass, amplitude reduction, or signal compression filter.
+# 9. Also acts as noise filtering, signal enhancement. Amplitude restoration
+#    step not included, but easy to do.
 #
 # By Vincent Granville, www.MLTechniques.com
 
