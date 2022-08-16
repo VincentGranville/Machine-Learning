@@ -1,4 +1,3 @@
-# Source: https://machinelearningmastery.com/curve-fitting-with-python/
 import numpy as np
 from scipy.optimize import curve_fit
 from matplotlib import pyplot
