@@ -1,31 +1,34 @@
 # Source: https://machinelearningmastery.com/curve-fitting-with-python/
-# fit a straight line to the economic data
-from numpy import arange
-from pandas import read_csv
+import numpy as np
 from scipy.optimize import curve_fit
 from matplotlib import pyplot
 
-# define the true objective function
-def objective(x, a, b):
-	return a * x + b
+def f(x, θ0, θ1, θ2, θ4, θ5):
+  θ0=1
+  y = θ0 + θ1*np.cos(θ2*x) + θ4*np.cos(θ5*x) 
+  return y
 
-# load the dataset
-url = 'https://raw.githubusercontent.com/jbrownlee/Datasets/master/longley.csv'
-dataframe = read_csv(url, header=None)
-data = dataframe.values
-# choose the input and output variables
-x, y = data[:, 4], data[:, -1]
-# curve fit
-popt, _ = curve_fit(objective, x, y)
-# summarize the parameter values
-a, b = popt
-print('y = %.5f * x + %.5f' % (a, b))
-# plot input vs output
+n=200
+x=[]
+y=[]
+
+# create data set (observations)
+a=2
+b=np.sqrt(2)
+c=np.sqrt(5) # np.sqrt(61)/2
+for k in range(n):
+  xobs=k/20.0
+  x.append(xobs)
+  yobs=1+0.5*np.cos(a*xobs)-0.7*np.cos(b*xobs) ### +0.05*np.cos(c*xobs)
+  y.append(yobs)
+  print(xobs,yobs)
+
+# curve fit between f and data
+popt, _ = curve_fit(f, x, y)
+θ0, θ1, θ2, θ4, θ5 = popt
+print('θ0=%.5f θ1=%.5f θ2=%.5f θ4=%.5f θ5=%.5f' % (θ0, θ1, θ2, θ4, θ5))
+
+# create and output plot
 pyplot.scatter(x, y)
-# define a sequence of inputs between the smallest and largest known inputs
-x_line = arange(min(x), max(x), 1)
-# calculate the output for the range
-y_line = objective(x_line, a, b)
-# create a line plot for the mapping function
-pyplot.plot(x_line, y_line, '--', color='red')
+pyplot.plot(x, y, '--', color='red')
 pyplot.show()
