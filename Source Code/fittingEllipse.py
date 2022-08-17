@@ -1,8 +1,7 @@
-# Source: https://scipython.com/blog/direct-linear-least-squares-fitting-of-an-ellipse/
-
 import numpy as np
 import matplotlib.pyplot as plt
-
+import moviepy.video.io.ImageSequenceClip  # to produce mp4 video
+from PIL import Image  
 
 def fit_ellipse(x, y):
     """
@@ -110,29 +109,74 @@ def get_ellipse_pts(params, npts=100, tmin=0, tmax=2*np.pi):
     y = y0 + ap * np.cos(t) * np.sin(phi) + bp * np.sin(t) * np.cos(phi)
     return x, y
 
-
-if __name__ == '__main__':
+def main(image, resolution, npts, noise, seed, tmin, tmax, params):
     # Test the algorithm with an example elliptical arc.
-    npts = 250
-    tmin, tmax = np.pi/6, 4 * np.pi/3
-    x0, y0 = 4, -3.5
-    ap, bp = 7, 3
-    phi = np.pi / 4
+    x0, y0, ap, bp, phi = params  ##### ????? e ?????
     # Get some points on the ellipse (no need to specify the eccentricity).
     x, y = get_ellipse_pts((x0, y0, ap, bp, None, phi), npts, tmin, tmax)
-    noise = 0.1
+    np.random.seed(seed)
     x += noise * np.random.normal(size=npts) 
     y += noise * np.random.normal(size=npts)
 
     coeffs = fit_ellipse(x, y)
-    print('Exact parameters:')
-    print('x0, y0, ap, bp, phi =', x0, y0, ap, bp, phi)
-    print('Fitted parameters:')
-    print('a, b, c, d, e, f =', coeffs)
+ #   print('Exact parameters:')
+    print('Exact  x0, y0, ap, bp, phi = : %+.5f %+.5f %+.5f %+.5f %+.5f' % (x0,y0,ap,bp,phi))
+#    print('x0, y0, ap, bp, phi =', x0, y0, ap, bp, phi)
+#    print('Fitted parameters:')
+    ### print('a, b, c, d, e, f =', coeffs)
     x0, y0, ap, bp, e, phi = cart_to_pol(coeffs)
-    print('x0, y0, ap, bp, e, phi = ', x0, y0, ap, bp, e, phi)
+    #print('x0, y0, ap, bp, phi = ', x0, y0, ap, bp, phi)
+    print('Fitted x0, y0, ap, bp, phi = : %+.5f %+.5f %+.5f %+.5f %+.5f' % (x0,y0,ap,bp,phi))
 
-    plt.plot(x, y, 'x')     # given points
+    plt.rcParams['axes.linewidth'] = 0.5
+    plt.rc('axes',edgecolor='black') # border color
+    plt.rc('xtick', labelsize=6) # font size, x axis 
+    plt.rc('ytick', labelsize=6) # font size, y axis
+
+    plt.scatter(x, y,s=0.5,color='red')     # given points
     x, y = get_ellipse_pts((x0, y0, ap, bp, e, phi))
-    plt.plot(x, y)
-    plt.show()
+    
+    plt.plot(x, y, linewidth=0.5, color='blue')
+    plt.savefig(image, bbox_inches='tight',dpi=resolution)  ######
+    if ShowImage:
+        plt.show()
+    else:
+        plt.close()
+    return()
+
+# main xxxxxxxxxxx -----------------
+
+image='foo2.png' # output file name
+resolution=300   # in dpi
+noise = 2        # amount of noise
+npts = 250       # number of points in training set
+tmin = 0         # training set: ellipse arc start at tim
+tmax = 2*np.pi   # training set: ellipse arc ends at tim
+###params = 4, -3.5, 10, 3, -np.pi/4
+params = 4, -3.5, 7, 3, 2*np.pi/3
+
+seed = 100
+ShowImage = False # set to False for video production
+
+flist=[]
+nframes=50
+
+for frame in range(0,50): 
+    image='ellipse'+str(frame)+'.png'
+    print(image)
+    p=frame/nframes
+    noise=3*(1-p)*(1-p)
+    params = 4, -3.5, 7, 1+6*(1-p), 2*(p+np.pi/3)
+    main(image, resolution, npts, noise, seed, tmin, tmax, params)
+    im = Image.open(image)
+    if frame==0:  
+      width, height = im.size
+      width=2*int(width/2)
+      height=2*int(height/2)
+      fixedSize=(width,height)
+    im = im.resize(fixedSize)   
+    im.save(image,"PNG")
+    flist.append(image)
+
+clip = moviepy.video.io.ImageSequenceClip.ImageSequenceClip(flist, fps=20) 
+clip.write_videofile('ellipseFitting.mp4')
