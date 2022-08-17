@@ -1,6 +1,7 @@
 import numpy as np
+import matplotlib as mpl
 from scipy.optimize import curve_fit
-from matplotlib import pyplot
+from matplotlib import pyplot, rc
 
 # initializations, define functions
 
@@ -54,7 +55,12 @@ for k in range(n):
 
 # show plot
 
-pyplot.plot(x, y_obs, color='red')
-pyplot.plot(x[0:n_training], y_pred[0:n_training], '--', color='blue')
-pyplot.plot(x[n_training:n], y_pred[n_training:n], '--', color='green')
+mpl.rcParams['axes.linewidth'] = 0.5
+rc('axes',edgecolor='black') # border color
+rc('xtick', labelsize=6) # font size, x axis 
+rc('ytick', labelsize=6) # font size, y axis
+pyplot.scatter(x[0:n_training],y_obs[0:n_training],s=0.5,color='red')
+pyplot.scatter(x[n_training:n],y_obs[n_training:n],s=0.5,color='orange')
+pyplot.plot(x, y_pred, color='blue',linewidth=0.5)
+pyplot.plot(x, y_exact, color='gray',linewidth=0.5)
 pyplot.show()
