@@ -9,8 +9,8 @@ def fpred(x, θ1, θ2, θ4, θ5):
   y = θ1*np.cos(θ2*x)+ θ4*np.cos(θ5*x) 
   return y
 
-def fobs(x,a,b,c,d,e,f):
-  y = a*np.cos(b*xobs)+c*np.cos(d*xobs)+e*np.cos(f*xobs)
+def fobs(x,a1,a2,a4,a5,a7,a8):    
+  y = a1*np.cos(a2*xobs)+a4*np.cos(a5*xobs)+a7*np.cos(a8*xobs)  
   return y
 
 n=800
@@ -20,19 +20,19 @@ y_obs=[]
 y_pred=[]
 y_exact=[]
 
-# create data set (observations)
+# create data set (observations)   
 
-a=0.5 
-b=np.sqrt(2)
-c=-0.7 
-d=2
-e=0.2 # noise (e=0 means no noise)
-f=np.log(2)
+a1=0.5 
+a2=np.sqrt(2)
+a4=-0.7 
+a5=2
+a7=0.2 # noise (e=0 means no noise)
+a8=np.log(2)
 
 for k in range(n):
   xobs=k/20.0
   x.append(xobs)
-  y_obs.append(fobs(xobs,a,b,c,d,e,f))
+  y_obs.append(fobs(xobs,a1,a2,a4,a5,a7,a8))  
 
 # curve fitting between f and data, on training set
 
@@ -42,7 +42,7 @@ popt, _ = curve_fit(fpred, x[0:n_training], y_obs[0:n_training],\
     method='trf',bounds=θ_bounds,p0=θ_start) 
 θ1, θ2, θ4, θ5 = popt
 print('Estimates  : θ1=%.5f θ2=%.5f θ4=%.5f θ5=%.5f' % (θ1, θ2, θ4, θ5))
-print('True values: θ1=%.5f θ2=%.5f θ4=%.5f θ5=%.5f' % (a, b, c, d))
+print('True values: θ1=%.5f θ2=%.5f θ4=%.5f θ5=%.5f' % (a1, a2, a4, a5))        
 print('Initial val: θ1=%.5f θ2=%.5f θ4=%.5f θ5=%.5f' % \
    (θ_start[0], θ_start[1], θ_start[2], θ_start[3]))
 
@@ -51,7 +51,7 @@ print('Initial val: θ1=%.5f θ2=%.5f θ4=%.5f θ5=%.5f' % \
 for k in range(n):
   xobs=x[k]
   y_pred.append(fpred(xobs, θ1, θ2, θ4, θ5))
-  y_exact.append(fpred(xobs, a, b, c, d))
+  y_exact.append(fpred(xobs, a1, a2, a4, a5))    
 
 # show plot
 
