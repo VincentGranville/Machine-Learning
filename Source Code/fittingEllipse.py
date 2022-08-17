@@ -4,17 +4,13 @@ import moviepy.video.io.ImageSequenceClip  # to produce mp4 video
 from PIL import Image  
 
 def fit_ellipse(x, y):
-    """
 
-    Fit the coefficients a,b,c,d,e,f, representing an ellipse described by
-    the formula F(x,y) = ax^2 + bxy + cy^2 + dx + ey + f = 0 to the provided
-    arrays of data points x=[x1, x2, ..., xn] and y=[y1, y2, ..., yn].
+    # Fit the coefficients a,b,c,d,e,f, representing an ellipse described by
+    # the formula F(x,y) = ax^2 + bxy + cy^2 + dx + ey + f = 0 to the provided
+    # arrays of data points x=[x1, x2, ..., xn] and y=[y1, y2, ..., yn].
 
-    Based on the algorithm of Halir and Flusser, "Numerically stable direct
-    least squares fitting of ellipses'.
-
-
-    """
+    # Based on the algorithm of Halir and Flusser, "Numerically stable direct
+    # least squares fitting of ellipses'.
 
     D1 = np.vstack([x**2, x*y, y**2]).T
     D2 = np.vstack([x, y, np.ones(len(x))]).T
@@ -30,18 +26,14 @@ def fit_ellipse(x, y):
     ak = eigvec[:, np.nonzero(con > 0)[0]]
     return np.concatenate((ak, T @ ak)).ravel()
 
-
 def cart_to_pol(coeffs):
-    """
 
-    Convert the cartesian conic coefficients, (a, b, c, d, e, f), to the
-    ellipse parameters, where F(x, y) = ax^2 + bxy + cy^2 + dx + ey + f = 0.
-    The returned parameters are x0, y0, ap, bp, e, phi, where (x0, y0) is the
-    ellipse centre; (ap, bp) are the semi-major and semi-minor axes,
-    respectively; e is the eccentricity; and phi is the rotation of the semi-
-    major axis from the x-axis.
-
-    """
+    # Convert the cartesian conic coefficients, (a, b, c, d, e, f), to the
+    # ellipse parameters, where F(x, y) = ax^2 + bxy + cy^2 + dx + ey + f = 0.
+    # The returned parameters are x0, y0, ap, bp, e, phi, where (x0, y0) is the
+    # ellipse centre; (ap, bp) are the semi-major and semi-minor axes,
+    # respectively; e is the eccentricity; and phi is the rotation of the semi-
+    # major axis from the x-axis.
 
     # We use the formulas from https://mathworld.wolfram.com/Ellipse.html
     # which assumes a cartesian form ax^2 + 2bxy + cy^2 + 2dx + 2fy + g = 0.
@@ -96,11 +88,9 @@ def cart_to_pol(coeffs):
 
 
 def get_ellipse_pts(params, npts=100, tmin=0, tmax=2*np.pi):
-    """
-    Return npts points on the ellipse described by the params = x0, y0, ap,
-    bp, e, phi for values of the parametric variable t between tmin and tmax.
 
-    """
+    # Return npts points on the ellipse described by the params = x0, y0, ap,
+    # bp, e, phi for values of the parametric variable t between tmin and tmax.
 
     x0, y0, ap, bp, e, phi = params
     # A grid of the parametric variable, t.
@@ -119,14 +109,11 @@ def main(image, resolution, npts, noise, seed, tmin, tmax, params):
     y += noise * np.random.normal(size=npts)
 
     coeffs = fit_ellipse(x, y)
- #   print('Exact parameters:')
-    print('Exact  x0, y0, ap, bp, phi = : %+.5f %+.5f %+.5f %+.5f %+.5f' % (x0,y0,ap,bp,phi))
-#    print('x0, y0, ap, bp, phi =', x0, y0, ap, bp, phi)
-#    print('Fitted parameters:')
-    ### print('a, b, c, d, e, f =', coeffs)
+    phi2 = phi % np.pi
+    print('Exact  x0, y0, ap, bp, phi = : %+.5f %+.5f %+.5f %+.5f %+.5f' % (x0,y0,ap,bp,phi2))
     x0, y0, ap, bp, e, phi = cart_to_pol(coeffs)
-    #print('x0, y0, ap, bp, phi = ', x0, y0, ap, bp, phi)
-    print('Fitted x0, y0, ap, bp, phi = : %+.5f %+.5f %+.5f %+.5f %+.5f' % (x0,y0,ap,bp,phi))
+    phi2 = phi % np.pi    
+    print('Fitted x0, y0, ap, bp, phi = : %+.5f %+.5f %+.5f %+.5f %+.5f' % (x0,y0,ap,bp,phi2))
 
     plt.rcParams['axes.linewidth'] = 0.5
     plt.rc('axes',edgecolor='black') # border color
@@ -137,25 +124,18 @@ def main(image, resolution, npts, noise, seed, tmin, tmax, params):
     x, y = get_ellipse_pts((x0, y0, ap, bp, e, phi))
     
     plt.plot(x, y, linewidth=0.5, color='blue')
-    plt.savefig(image, bbox_inches='tight',dpi=resolution)  ######
+    plt.savefig(image, bbox_inches='tight',dpi=resolution)  
     if ShowImage:
         plt.show()
     else:
         plt.close()
     return()
 
-# main xxxxxxxxxxx -----------------
+#--- main part
 
-image='foo2.png' # output file name
-resolution=300   # in dpi
-noise = 2        # amount of noise
-npts = 250       # number of points in training set
-tmin = 0         # training set: ellipse arc start at tim
-tmax = 2*np.pi   # training set: ellipse arc ends at tim
-###params = 4, -3.5, 10, 3, -np.pi/4
-params = 4, -3.5, 7, 3, 2*np.pi/3
-
-seed = 100
+resolution=300    # image resolution in dpi
+seed = 100        # same seed for each curve fitting
+npts = 250        # number of points in training set
 ShowImage = False # set to False for video production
 
 flist=[]
@@ -163,10 +143,12 @@ nframes=50
 
 for frame in range(0,50): 
     image='ellipse'+str(frame)+'.png'
-    print(image)
-    p=frame/nframes
+    p=frame/(nframes-1)
     noise=3*(1-p)*(1-p)
-    params = 4, -3.5, 7, 1+6*(1-p), 2*(p+np.pi/3)
+    tmin=(1-p)*np.pi      # training set: ellipse arc start at tim
+    tmax = 2*np.pi        # training set: ellipse arc ends at tim
+    params = 4, -3.5, 7, 1+6*(1-p), 2*(p+np.pi/3) # ellipse parameters
+    print(image) # filename of the image
     main(image, resolution, npts, noise, seed, tmin, tmax, params)
     im = Image.open(image)
     if frame==0:  
@@ -180,3 +162,5 @@ for frame in range(0,50):
 
 clip = moviepy.video.io.ImageSequenceClip.ImageSequenceClip(flist, fps=20) 
 clip.write_videofile('ellipseFitting.mp4')
+
+### add gif xxxx // 200 frames
