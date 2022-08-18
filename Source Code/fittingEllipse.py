@@ -100,8 +100,9 @@ def get_ellipse_pts(params, npts=100, tmin=0, tmax=2*np.pi):
     return x, y
 
 def main(image, resolution, npts, noise, seed, tmin, tmax, params):
+    
     # Test the algorithm with an example elliptical arc.
-    x0, y0, ap, bp, phi = params  ##### ????? e ?????
+    x0, y0, ap, bp, phi = params  
     # Get some points on the ellipse (no need to specify the eccentricity).
     x, y = get_ellipse_pts((x0, y0, ap, bp, None, phi), npts, tmin, tmax)
     np.random.seed(seed)
