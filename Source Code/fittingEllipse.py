@@ -147,8 +147,8 @@ for frame in range(0,nframes):
     image='ellipse'+str(frame)+'.png'
     p=frame/(nframes-1)
     noise=3*(1-p)*(1-p)
-    tmin=(1-p)*np.pi      # training set: ellipse arc start at tim
-    tmax = 2*np.pi        # training set: ellipse arc ends at tim
+    tmin=(1-p)*np.pi      # training set: ellipse arc starts at tmin
+    tmax = 2*np.pi        # training set: ellipse arc ends at tmax
     params = 4, -3.5, 7, 1+6*(1-p), 2*(p+np.pi/3) # ellipse parameters
     print(image) # filename of the image
     main(image, resolution, npts, noise, seed, tmin, tmax, params)
