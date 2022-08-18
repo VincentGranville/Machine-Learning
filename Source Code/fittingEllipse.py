@@ -139,9 +139,10 @@ npts = 250        # number of points in training set
 ShowImage = False # set to False for video production
 
 flist=[]
-nframes=50
+gif=[] 
+nframes=250
 
-for frame in range(0,50): 
+for frame in range(0,nframes): 
     image='ellipse'+str(frame)+'.png'
     p=frame/(nframes-1)
     noise=3*(1-p)*(1-p)
@@ -156,11 +157,15 @@ for frame in range(0,50):
       width=2*int(width/2)
       height=2*int(height/2)
       fixedSize=(width,height)
-    im = im.resize(fixedSize)   
+    im = im.resize(fixedSize) 
+    gif.append(im)  # to produce Gif image [uses lots of memory] 
     im.save(image,"PNG")
     flist.append(image)
 
+# output video
 clip = moviepy.video.io.ImageSequenceClip.ImageSequenceClip(flist, fps=20) 
 clip.write_videofile('ellipseFitting.mp4')
 
-### add gif xxxx // 200 frames
+# output video as gif file 
+gif[0].save('ellipse.gif',save_all=True, append_images=gif[1:],loop=0)  
+
