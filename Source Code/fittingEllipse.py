@@ -86,6 +86,32 @@ def cart_to_pol(coeffs):
 
     return x0, y0, ap, bp, e, phi
 
+def sample_from_ellipse(x0, y0, ap, bp, phi):
+
+    x=np.empty(npts)
+    y=np.empty(npts)
+
+    # sample from multivariate normal, then rescale 
+    cov=[[ap,0],[0,bp]]
+    u, v = np.random.multivariate_normal([0, 0], cov, size = npts).T
+    d=np.sqrt(u*u/(ap*ap) + v*v/(bp*bp))
+    u=u/d
+    v=v/d
+    angle=np.arctan2(u,v)
+    x_unsorted=x0+np.cos(phi)*u-np.sin(phi)*v
+    y_unsorted=y0+np.sin(phi)*u+np.cos(phi)*v
+
+    # sort the points x, y for nice rendering with mpl.plot
+    hash={}
+    hash = dict(enumerate(angle.flatten(), 0)) # convert angle to dictionary
+    idx=0
+    for w in sorted(hash, key=hash.get):
+        x[idx]=x_unsorted[w]
+        y[idx]=y_unsorted[w]
+        idx=idx+1
+
+    return x, y
+
 def get_ellipse_pts(params, npts=100, tmin=0, tmax=2*np.pi, sampling='Standard'):
 
     # Return npts points on the ellipse described by the params = x0, y0, ap,
@@ -108,35 +134,37 @@ def get_ellipse_pts(params, npts=100, tmin=0, tmax=2*np.pi, sampling='Standard')
         y = y0 + ap * np.cos(t) * np.sin(phi) + bp * np.sin(t) * np.cos(phi)
 
     elif sampling=='Enhanced':
+        x, y = sample_from_ellipse(x0, y0, ap, bp, phi)
+
         # The npts points (x, y) are obtained by rejection sampling, to make sure 
         # the distances to x0, y0 are uniformy distributed  
-        count=0
+        #count=0
         ### trial=0
-        x=np.empty(npts)
-        y=np.empty(npts)
-        z={}
-        distMax=max(ap,bp)**2  ############## 30+max(ap,bp)**2
-        while count < npts:
+        #x=np.empty(npts)
+        #y=np.empty(npts)
+        #z={}
+        #distMax=max(ap,bp)**2  ############## 30+max(ap,bp)**2
+        #while count < npts:
            ### trial=trial+1
-           t=np.random.uniform(tmin,tmax)
-           u = x0 + ap * np.cos(t) * np.cos(phi) - bp * np.sin(t) * np.sin(phi)
-           v = y0 + ap * np.cos(t) * np.sin(phi) + bp * np.sin(t) * np.cos(phi)
+         #  t=np.random.uniform(tmin,tmax)
+         #  u = x0 + ap * np.cos(t) * np.cos(phi) - bp * np.sin(t) * np.sin(phi)
+         #  v = y0 + ap * np.cos(t) * np.sin(phi) + bp * np.sin(t) * np.cos(phi)
            ### dist = np.sqrt((u-x0)*(u-x0)+(v-y0)*(v-y0)) ###################
-           dist = (u-x0)*(u-x0)+(v-y0)*(v-y0) #########################3
-           distRand=np.random.uniform(0,distMax)
-           if dist < distRand:  # accept sampled point ############### include points with distMax to avoid gaps when plotting
-               z[t]=[(u,v)]
-               count=count+1
-               if frame==nframes-1:  ####
-                   print(t,dist,distMax)  ####
+          # dist = (u-x0)*(u-x0)+(v-y0)*(v-y0) #########################3
+          # distRand=np.random.uniform(0,distMax)
+          # if dist < distRand:  # accept sampled point ############### include points with distMax to avoid gaps when plotting
+          #     z[t]=[(u,v)]
+          #     count=count+1
+          #     if frame==nframes-1:  ####
+          #         print(t,dist,distMax)  ####
         # sort x, y according to z keys so points can be connected by lines in plt.plot
-        count=0
-        for t in sorted(z.keys()):
-            [(x[count], y[count])] = z[t]
-            count=count+1
+        #count=0
+        #for t in sorted(z.keys()):
+         #   [(x[count], y[count])] = z[t]
+         #   count=count+1
 
     if frame==nframes-1:  #####
-      print("sampling=",sampling) ####
+      print("***** A sampling=",sampling) ####
       out=open("test.txt","w") ######## ------------- issue when frame==nframes-1 
       for kk in range(0,npts): ############
         line=str(x[kk])+"\t"+str(y[kk])+"\n" ####
@@ -200,7 +228,7 @@ def main(npts, noise, seed, tmin, tmax, params, sampling):
 #--- Main Part ---
 
 noise_CDF='Uniform' # options:  'Normal' or 'Uniform'
-sampling='Standard' # options: 'Enhanced' or 'Standard'
+sampling='Enhanced' # options: 'Enhanced' or 'Standard'
 mode='ConfidenceRegion'   # options: 'ConfidenceRegion' or 'FittingCurves' 
 npts = 250        # number of points in training set
 
@@ -255,4 +283,5 @@ clip.write_videofile('ellipseFitting.mp4')
 
 # output video as gif file 
 gif[0].save('ellipseFitting.gif',save_all=True, append_images=gif[1:],loop=0)  
+
 
