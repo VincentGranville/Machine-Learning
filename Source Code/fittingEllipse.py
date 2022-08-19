@@ -84,22 +84,37 @@ def cart_to_pol(coeffs):
         phi += np.pi/2
     phi = phi % np.pi
 
-    return x0, y0, ap, bp, e, phi
+    return x0, y0, ap, bp, phi
 
-def sample_from_ellipse(x0, y0, ap, bp, phi):
+def sample_from_ellipse(x0, y0, ap, bp, phi, tmin, tmax):
 
     x=np.empty(npts)
     y=np.empty(npts)
+    x_unsorted=np.empty(npts)
+    y_unsorted=np.empty(npts)
+    angle=np.empty(npts)
+
+    ############################### role of phi ????????????????
 
     # sample from multivariate normal, then rescale 
     cov=[[ap,0],[0,bp]]
-    u, v = np.random.multivariate_normal([0, 0], cov, size = npts).T
-    d=np.sqrt(u*u/(ap*ap) + v*v/(bp*bp))
-    u=u/d
-    v=v/d
-    angle=np.arctan2(u,v)
-    x_unsorted=x0+np.cos(phi)*u-np.sin(phi)*v
-    y_unsorted=y0+np.sin(phi)*u+np.cos(phi)*v
+    count=0
+    while count < npts:
+        u, v = np.random.multivariate_normal([0, 0], cov, size = 1).T
+        d=np.sqrt(u*u/(ap*ap) + v*v/(bp*bp))
+        u=u/d
+        v=v/d
+        t = np.arctan2(ap*v,bp*u)  ###### arctan2(u,v)
+        t = np.pi + t   ##+ np.pi
+        if t >= tmin and t <= tmax:
+            x_unsorted[count] = x0 + np.cos(phi)*u - np.sin(phi)*v
+            y_unsorted[count] = y0 + np.sin(phi)*u + np.cos(phi)*v
+            angle[count]=t
+            count=count+1
+
+        #t = np.linspace(tmin, tmax, npts)
+        #x = x0 + ap * np.cos(t) * np.cos(phi) - bp * np.sin(t) * np.sin(phi)
+        #y = y0 + ap * np.cos(t) * np.sin(phi) + bp * np.sin(t) * np.cos(phi)
 
     # sort the points x, y for nice rendering with mpl.plot
     hash={}
@@ -117,7 +132,7 @@ def get_ellipse_pts(params, npts=100, tmin=0, tmax=2*np.pi, sampling='Standard')
     # Return npts points on the ellipse described by the params = x0, y0, ap,
     # bp, e, phi for values of the parametric variable t between tmin and tmax.
 
-    x0, y0, ap, bp, e, phi = params
+    x0, y0, ap, bp, phi = params
     
 ################## need better sampling
 ### t random on 0,2 pi // distance to center must be uniformly distributed ???
@@ -132,54 +147,18 @@ def get_ellipse_pts(params, npts=100, tmin=0, tmax=2*np.pi, sampling='Standard')
         t = np.linspace(tmin, tmax, npts)
         x = x0 + ap * np.cos(t) * np.cos(phi) - bp * np.sin(t) * np.sin(phi)
         y = y0 + ap * np.cos(t) * np.sin(phi) + bp * np.sin(t) * np.cos(phi)
-
     elif sampling=='Enhanced':
-        x, y = sample_from_ellipse(x0, y0, ap, bp, phi)
-
-        # The npts points (x, y) are obtained by rejection sampling, to make sure 
-        # the distances to x0, y0 are uniformy distributed  
-        #count=0
-        ### trial=0
-        #x=np.empty(npts)
-        #y=np.empty(npts)
-        #z={}
-        #distMax=max(ap,bp)**2  ############## 30+max(ap,bp)**2
-        #while count < npts:
-           ### trial=trial+1
-         #  t=np.random.uniform(tmin,tmax)
-         #  u = x0 + ap * np.cos(t) * np.cos(phi) - bp * np.sin(t) * np.sin(phi)
-         #  v = y0 + ap * np.cos(t) * np.sin(phi) + bp * np.sin(t) * np.cos(phi)
-           ### dist = np.sqrt((u-x0)*(u-x0)+(v-y0)*(v-y0)) ###################
-          # dist = (u-x0)*(u-x0)+(v-y0)*(v-y0) #########################3
-          # distRand=np.random.uniform(0,distMax)
-          # if dist < distRand:  # accept sampled point ############### include points with distMax to avoid gaps when plotting
-          #     z[t]=[(u,v)]
-          #     count=count+1
-          #     if frame==nframes-1:  ####
-          #         print(t,dist,distMax)  ####
-        # sort x, y according to z keys so points can be connected by lines in plt.plot
-        #count=0
-        #for t in sorted(z.keys()):
-         #   [(x[count], y[count])] = z[t]
-         #   count=count+1
-
-    if frame==nframes-1:  #####
-      print("***** A sampling=",sampling) ####
-      out=open("test.txt","w") ######## ------------- issue when frame==nframes-1 
-      for kk in range(0,npts): ############
-        line=str(x[kk])+"\t"+str(y[kk])+"\n" ####
-        out.write(line) ####
-      out.close() ####
-    #exit()
+        x, y = sample_from_ellipse(x0, y0, ap, bp, phi, tmin, tmax)
 
     return x, y
 
 def main(npts, noise, seed, tmin, tmax, params, sampling):
 
-    x0, y0, ap, bp, phi = params  
+    # params = x0, y0, ap, bp, phi (input params for ellipse)
+
     # Get some points x, y on the ellipse (no need to specify the eccentricity).
-    x, y = get_ellipse_pts((x0, y0, ap, bp, None, phi), npts, tmin, tmax, sampling)
- 
+    x, y = get_ellipse_pts(params, npts, tmin, tmax, sampling)
+
     # perturb x, y on the ellipse with some noise
     if frame==nframes-1:      
         noise=0   # to produce the exact curve in last frame 
@@ -193,14 +172,11 @@ def main(npts, noise, seed, tmin, tmax, params, sampling):
       x += noise * np.random.uniform(-1,1,size=npts) 
       y += noise * np.random.uniform(-1,1,size=npts)
 
-    coeffs = fit_ellipse(x, y)
-
-    # print exact and estimated values or curve parameters
-    phi2 = phi % np.pi  # make sure angle phi is between 0 and pi
-    print('Exact  x0, y0, ap, bp, phi = : %+.5f %+.5f %+.5f %+.5f %+.5f' % (x0,y0,ap,bp,phi2))
-    x0, y0, ap, bp, e, phi = cart_to_pol(coeffs)
-    phi2 = phi % np.pi    # make sure angle phi is between 0 and pi
-    print('Fitted x0, y0, ap, bp, phi = : %+.5f %+.5f %+.5f %+.5f %+.5f' % (x0,y0,ap,bp,phi2))
+    # get and print exact and estimated ellipse params
+    coeffs = fit_ellipse(x, y) # get quadratic form coeffs
+    print('Exact  x0, y0, ap, bp, phi = : %+.5f %+.5f %+.5f %+.5f %+.5f' % params)
+    fitted_params = cart_to_pol(coeffs)  # convert quadratic coeffs to params
+    print('Fitted x0, y0, ap, bp, phi = : %+.5f %+.5f %+.5f %+.5f %+.5f' % fitted_params)
 
     # intialize plotting parameters
     plt.rcParams['axes.linewidth'] = 0.5
@@ -209,17 +185,24 @@ def main(npts, noise, seed, tmin, tmax, params, sampling):
     plt.rc('ytick', labelsize=6) # font size, y axis
     if frame==nframes-1:
         col='black' # color of exact curve
-        alpha=1    # color transparency level, exact curve
+        alpha=1     # color transparency level, exact curve
     else:
         col='blue'  # color of fitted curve
         alpha=0.05  # transparency level
 
     # produce plot for training set
     plt.scatter(x, y,s=0.5,color='red',alpha=0.03)   # plot training set points in red
-    # get points on the fitted ellipse
-    x, y = get_ellipse_pts((x0, y0, ap, bp, e, phi),npts, tmin, tmax, sampling)
-    # plot fittel ellipse  (fitted to training set)
+ 
+    # get points on the fitted ellipse 
+    x, y = get_ellipse_pts(fitted_params,npts, tmin, tmax, sampling) ###
+
+    # plot fitted ellipse  (fitted to training set)
     plt.plot(x, y, linewidth=0.5, color=col,alpha=alpha) # plot fitting curve 
+    # fill gap (missing segment in the ellipse plot) if plotting full ellipse
+    if tmax-tmin > 2*np.pi - 0.01:
+        gap_x=[x[npts-1],x[0]]
+        gap_y=[y[npts-1],y[0]]
+        plt.plot(gap_x, gap_y, linewidth=0.5, color=col,alpha=alpha)
     # save plots in a picture [filename is image]
     plt.savefig(image, bbox_inches='tight',dpi=dpi)  
     if ShowImage:
@@ -230,16 +213,16 @@ def main(npts, noise, seed, tmin, tmax, params, sampling):
 
 #--- Main Part ---
 
-noise_CDF='Uniform' # options:  'Normal' or 'Uniform'
+noise_CDF='Normal' # options:  'Normal' or 'Uniform'
 sampling='Enhanced' # options: 'Enhanced' or 'Standard'
 mode='ConfidenceRegion'   # options: 'ConfidenceRegion' or 'FittingCurves' 
-npts = 250        # number of points in training set
+npts = 30 #        # number of points in training set
 
 ShowImage = False # set to False for video production
 dpi=100    # image resolution in dpi (100 for gif / 300 for video)
 flist=[]   # list of image filenames for the video
 gif=[]     # used to produce the gif image
-nframes=50 # number of frames in video
+nframes=250 # number of frames in video
 
 for frame in range(0,nframes): 
 
@@ -248,24 +231,24 @@ for frame in range(0,nframes):
     image='ellipse'+str(frame)+'.png' # filename of image in current frame
     print(image) # show progress on the screen
 
+    # params = (x0, y0, ap, bp, phi) : first two coeffs is center of ellipse, last one 
+    #  is rotation angle, the two in the middle are the semi-major and semi-minor axes
+
     if mode=='ConfidenceRegion':
         seed=frame # new set of random numbers for each image 
-        noise=0.8   # amount of noise added to to training set
-        tmin=0  #np.pi           # training set: ellipse arc starts at tmin
-        tmax = 2*np.pi   # training set: ellipse arc ends at tmax
-        params = 4, -3.5, 7, 1, np.pi/4 # ellipse parameters, see [*] ### 1, 1 for axis / 7 7
+        noise=0.6    # amount of noise added to to training set
+        tmin=0        # training set: ellipse arc starts at tmin
+        tmax = 2*np.pi  # training set: ellipse arc ends at tmax
+        params = 4, -2.5, 7, 4, np.pi/4 # ellipse parameters
     elif mode=='CurveFitting':
         seed = 100        # same seed (random number generator) for all images
         p=frame/(nframes-1) # assumes nframes > 1
         noise=3*(1-p)*(1-p) # amount of noise added to to training set
         tmin=(1-p)*np.pi  # training set: ellipse arc starts at tmin
         tmax = 2*np.pi    # training set: ellipse arc ends at tmax
-        params = 4, -3.5, 7, 1+6*(1-p), 2*(p+np.pi/3) # ellipse parameters, see [*]
+        params = 4, -3.5, 7, 1+6*(1-p), 2*(p+np.pi/3) # ellipse parameters
 
-    # call to main function    
-    # description of params [*]
-    #     first two is center of ellipse, last one rotation angle
-    #     the two in the middle are the semi-major and semi-minor axes
+    # call to main function 
     main(npts, noise, seed, tmin, tmax, params, sampling)
 
     # processing images for video and animated gif production (using pillow library)
@@ -286,6 +269,4 @@ clip.write_videofile('ellipseFitting.mp4')
 
 # output video as gif file 
 gif[0].save('ellipseFitting.gif',save_all=True, append_images=gif[1:],loop=0)  
-
-
 
