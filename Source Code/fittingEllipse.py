@@ -136,16 +136,25 @@ def get_ellipse_pts(params, npts=100, tmin=0, tmax=2*np.pi, sampling='Standard')
 
     return x, y
 
+def vgplot(x, y, color, alpha, npts, tmin, tmax):
+
+    plt.plot(x, y, linewidth=0.2, color=color,alpha=alpha) # plot exact ellipse 
+    # fill gap (missing segment in the ellipse plot) if plotting full ellipse
+    if tmax-tmin > 2*np.pi - 0.01:
+        gap_x=[x[npts-1],x[0]]
+        gap_y=[y[npts-1],y[0]]
+        plt.plot(gap_x, gap_y, linewidth=0.5, color=color,alpha=alpha)
+    return()
+
 def main(npts, noise, seed, tmin, tmax, params, sampling):
 
     # params = x0, y0, ap, bp, phi (input params for ellipse)
 
-    # Get some points x, y on the ellipse (no need to specify the eccentricity).
+    # Get points x, y on the exact ellipse and plot them
     x, y = get_ellipse_pts(params, npts, tmin, tmax, sampling)
+    vgplot(x, y,'black', 1, npts, tmin, tmax)
 
-    # perturb x, y on the ellipse with some noise
-    if frame==nframes-1:      
-        noise=0   # to produce the exact curve in last frame 
+    # perturb x, y on the ellipse with some noise, to produce training set
     np.random.seed(seed)
     if noise_CDF=='Normal':
       cov = [[1,0],[0,1]]  
@@ -162,31 +171,13 @@ def main(npts, noise, seed, tmin, tmax, params, sampling):
     fitted_params = cart_to_pol(coeffs)  # convert quadratic coeffs to params
     print('Fitted x0, y0, ap, bp, phi = : %+.5f %+.5f %+.5f %+.5f %+.5f' % fitted_params)
 
-    # intialize plotting parameters
-    plt.rcParams['axes.linewidth'] = 0.5
-    plt.rc('axes',edgecolor='black') # border color
-    plt.rc('xtick', labelsize=6) # font size, x axis  
-    plt.rc('ytick', labelsize=6) # font size, y axis
-    if frame==nframes-1:
-        col='black' # color of exact curve
-        alpha=1     # color transparency level, exact curve
-    else:
-        col='blue'  # color of fitted curve
-        alpha=0.05  # transparency level
-
-    # produce plot for training set
-    plt.scatter(x, y,s=0.5,color='red',alpha=0.20)   # plot training set points in red
+    # plot training set points in red
+    plt.scatter(x, y,s=0.5,color='red',alpha=0.1)   
  
-    # get points on the fitted ellipse 
-    x, y = get_ellipse_pts(fitted_params,npts, tmin, tmax, sampling) ###
+    # get points on the fitted ellipse and plot them
+    x, y = get_ellipse_pts(fitted_params,npts, tmin, tmax, sampling) 
+    vgplot(x, y,'blue', 0.1, npts, tmin, tmax)
 
-    # plot fitted ellipse  (fitted to training set)
-    plt.plot(x, y, linewidth=0.5, color=col,alpha=alpha) # plot fitting curve 
-    # fill gap (missing segment in the ellipse plot) if plotting full ellipse
-    if tmax-tmin > 2*np.pi - 0.01:
-        gap_x=[x[npts-1],x[0]]
-        gap_y=[y[npts-1],y[0]]
-        plt.plot(gap_x, gap_y, linewidth=0.5, color=col,alpha=alpha)
     # save plots in a picture [filename is image]
     plt.savefig(image, bbox_inches='tight',dpi=dpi)  
     if ShowImage:
@@ -195,12 +186,12 @@ def main(npts, noise, seed, tmin, tmax, params, sampling):
         plt.close() # so, each video frame contains one curve only
     return()
 
-#--- Main Part ---
+#--- Main Part: Initializationa
 
 noise_CDF='Normal'       # options:  'Normal' or 'Uniform'
 sampling='Standard'      # options: 'Enhanced' or 'Standard'
 mode='ConfidenceRegion'  # options: 'ConfidenceRegion' or 'FittingCurves' 
-npts = 30                # number of points in training set
+npts = 100                # number of points in training set
 
 ShowImage = False # set to False for video production
 dpi=100     # image resolution in dpi (100 for gif / 300 for video)
@@ -208,10 +199,17 @@ flist=[]    # list of image filenames for the video
 gif=[]      # used to produce the gif image
 nframes=50  # number of frames in video
 
+# intialize plotting parameters
+plt.rcParams['axes.linewidth'] = 0.5
+plt.rc('axes',edgecolor='black') # border color
+plt.rc('xtick', labelsize=6) # font size, x axis  
+plt.rc('ytick', labelsize=6) # font size, y axis
+
+#--- Main part: Main loop
+
 for frame in range(0,nframes): 
 
-    # Global variables: dpi, frame, image 
-
+    # Global variables: dpi, frame, image
     image='ellipse'+str(frame)+'.png' # filename of image in current frame
     print(image) # show progress on the screen
 
@@ -220,10 +218,10 @@ for frame in range(0,nframes):
 
     if mode=='ConfidenceRegion':
         seed=frame      # new set of random numbers for each image 
-        noise=0.05       # amount of noise added to to training set
-        tmin=3*np.pi/2 # np.pi/4          # training set: ellipse arc starts at tmin
+        noise=0.8       # amount of noise added to to training set
+        tmin=np.pi/4    # training set: ellipse arc starts at tmin
         tmax = 2*np.pi  # training set: ellipse arc ends at tmax
-        params = 4, -2.5, 7, 4, np.pi/4 # ellipse parameters
+        params = 3, -2.5, 7, 4, np.pi/4 # ellipse parameters
     elif mode=='CurveFitting':
         seed = 100          # same seed (random number generator) for all images
         p=frame/(nframes-1) # assumes nframes > 1
