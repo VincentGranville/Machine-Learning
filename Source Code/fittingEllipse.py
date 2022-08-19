@@ -94,8 +94,6 @@ def sample_from_ellipse(x0, y0, ap, bp, phi, tmin, tmax):
     y_unsorted=np.empty(npts)
     angle=np.empty(npts)
 
-    ############################### role of phi ????????????????
-
     # sample from multivariate normal, then rescale 
     cov=[[ap,0],[0,bp]]
     count=0
@@ -104,21 +102,16 @@ def sample_from_ellipse(x0, y0, ap, bp, phi, tmin, tmax):
         d=np.sqrt(u*u/(ap*ap) + v*v/(bp*bp))
         u=u/d
         v=v/d
-        t = np.arctan2(ap*v,bp*u)  ###### arctan2(u,v)
-        t = np.pi + t   ##+ np.pi
+        t = np.pi + np.arctan2(-ap*v,-bp*u)   
         if t >= tmin and t <= tmax:
             x_unsorted[count] = x0 + np.cos(phi)*u - np.sin(phi)*v
             y_unsorted[count] = y0 + np.sin(phi)*u + np.cos(phi)*v
             angle[count]=t
             count=count+1
 
-        #t = np.linspace(tmin, tmax, npts)
-        #x = x0 + ap * np.cos(t) * np.cos(phi) - bp * np.sin(t) * np.sin(phi)
-        #y = y0 + ap * np.cos(t) * np.sin(phi) + bp * np.sin(t) * np.cos(phi)
-
     # sort the points x, y for nice rendering with mpl.plot
     hash={}
-    hash = dict(enumerate(angle.flatten(), 0)) # convert angle to dictionary
+    hash = dict(enumerate(angle.flatten(), 0)) # convert array angle to dictionary
     idx=0
     for w in sorted(hash, key=hash.get):
         x[idx]=x_unsorted[w]
@@ -134,15 +127,6 @@ def get_ellipse_pts(params, npts=100, tmin=0, tmax=2*np.pi, sampling='Standard')
 
     x0, y0, ap, bp, phi = params
     
-################## need better sampling
-### t random on 0,2 pi // distance to center must be uniformly distributed ???
-### pick t evenly on circle the map to ellipse??? 
-### this oversample far from center, undersample close to center
-#### use rejection sampling: sample dist to center uniformly on 0, maxDist, get (x, y) with that distance
-
-### sampling on an ellipse: https://math.stackexchange.com/questions/2059764/uniform-sampling-of-points-on-the-curve-of-an-ellipse-jacobian-of-transformatio
-### https://math.stackexchange.com/questions/973101/how-to-generate-points-uniformly-distributed-on-the-surface-of-an-ellipsoid
-
     if sampling=='Standard':
         t = np.linspace(tmin, tmax, npts)
         x = x0 + ap * np.cos(t) * np.cos(phi) - bp * np.sin(t) * np.sin(phi)
@@ -191,7 +175,7 @@ def main(npts, noise, seed, tmin, tmax, params, sampling):
         alpha=0.05  # transparency level
 
     # produce plot for training set
-    plt.scatter(x, y,s=0.5,color='red',alpha=0.03)   # plot training set points in red
+    plt.scatter(x, y,s=0.5,color='red',alpha=0.20)   # plot training set points in red
  
     # get points on the fitted ellipse 
     x, y = get_ellipse_pts(fitted_params,npts, tmin, tmax, sampling) ###
@@ -213,16 +197,16 @@ def main(npts, noise, seed, tmin, tmax, params, sampling):
 
 #--- Main Part ---
 
-noise_CDF='Normal' # options:  'Normal' or 'Uniform'
-sampling='Enhanced' # options: 'Enhanced' or 'Standard'
-mode='ConfidenceRegion'   # options: 'ConfidenceRegion' or 'FittingCurves' 
-npts = 30 #        # number of points in training set
+noise_CDF='Normal'       # options:  'Normal' or 'Uniform'
+sampling='Standard'      # options: 'Enhanced' or 'Standard'
+mode='ConfidenceRegion'  # options: 'ConfidenceRegion' or 'FittingCurves' 
+npts = 30                # number of points in training set
 
 ShowImage = False # set to False for video production
-dpi=100    # image resolution in dpi (100 for gif / 300 for video)
-flist=[]   # list of image filenames for the video
-gif=[]     # used to produce the gif image
-nframes=250 # number of frames in video
+dpi=100     # image resolution in dpi (100 for gif / 300 for video)
+flist=[]    # list of image filenames for the video
+gif=[]      # used to produce the gif image
+nframes=50  # number of frames in video
 
 for frame in range(0,nframes): 
 
@@ -235,17 +219,17 @@ for frame in range(0,nframes):
     #  is rotation angle, the two in the middle are the semi-major and semi-minor axes
 
     if mode=='ConfidenceRegion':
-        seed=frame # new set of random numbers for each image 
-        noise=0.6    # amount of noise added to to training set
-        tmin=0        # training set: ellipse arc starts at tmin
+        seed=frame      # new set of random numbers for each image 
+        noise=0.05       # amount of noise added to to training set
+        tmin=3*np.pi/2 # np.pi/4          # training set: ellipse arc starts at tmin
         tmax = 2*np.pi  # training set: ellipse arc ends at tmax
         params = 4, -2.5, 7, 4, np.pi/4 # ellipse parameters
     elif mode=='CurveFitting':
-        seed = 100        # same seed (random number generator) for all images
+        seed = 100          # same seed (random number generator) for all images
         p=frame/(nframes-1) # assumes nframes > 1
         noise=3*(1-p)*(1-p) # amount of noise added to to training set
-        tmin=(1-p)*np.pi  # training set: ellipse arc starts at tmin
-        tmax = 2*np.pi    # training set: ellipse arc ends at tmax
+        tmin=(1-p)*np.pi    # training set: ellipse arc starts at tmin
+        tmax = 2*np.pi      # training set: ellipse arc ends at tmax
         params = 4, -3.5, 7, 1+6*(1-p), 2*(p+np.pi/3) # ellipse parameters
 
     # call to main function 
@@ -259,7 +243,7 @@ for frame in range(0,nframes):
       height=2*int(height/2)
       fixedSize=(width,height) # even number of pixels for video production 
     im = im.resize(fixedSize)  # all images must have same size to produce video
-    gif.append(im)  # to produce Gif image [uses lots of memory if dpi > 100] 
+    gif.append(im)       # to produce Gif image [uses lots of memory if dpi > 100] 
     im.save(image,"PNG") # save resized image for video production
     flist.append(image)
 
