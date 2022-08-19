@@ -178,8 +178,8 @@ def main(npts, noise, seed, tmin, tmax, params, sampling):
 
     x0, y0, ap, bp, phi = params  
     # Get some points x, y on the ellipse (no need to specify the eccentricity).
-    x, y = get_ellipse_pts((x0, y0, ap, bp, None, phi), npts, tmin, tmax)
-    
+    x, y = get_ellipse_pts((x0, y0, ap, bp, None, phi), npts, tmin, tmax, sampling)
+ 
     # perturb x, y on the ellipse with some noise
     if frame==nframes-1:      
         noise=0   # to produce the exact curve in last frame 
@@ -214,10 +214,13 @@ def main(npts, noise, seed, tmin, tmax, params, sampling):
         col='blue'  # color of fitted curve
         alpha=0.05  # transparency level
 
-    # produce plot, save it as an image with filename image 
+    # produce plot for training set
     plt.scatter(x, y,s=0.5,color='red',alpha=0.03)   # plot training set points in red
+    # get points on the fitted ellipse
     x, y = get_ellipse_pts((x0, y0, ap, bp, e, phi),npts, tmin, tmax, sampling)
+    # plot fittel ellipse  (fitted to training set)
     plt.plot(x, y, linewidth=0.5, color=col,alpha=alpha) # plot fitting curve 
+    # save plots in a picture [filename is image]
     plt.savefig(image, bbox_inches='tight',dpi=dpi)  
     if ShowImage:
         plt.show()
@@ -283,5 +286,6 @@ clip.write_videofile('ellipseFitting.mp4')
 
 # output video as gif file 
 gif[0].save('ellipseFitting.gif',save_all=True, append_images=gif[1:],loop=0)  
+
 
 
