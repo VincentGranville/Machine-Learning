@@ -86,7 +86,41 @@ def cart_to_pol(coeffs):
 
     return x0, y0, ap, bp, phi
 
-def sample_from_ellipse(x0, y0, ap, bp, phi, tmin, tmax):
+def sample_from_ellipse_even(x0, y0, ap, bp, phi, tmin, tmax, npts):
+
+    npoints = 1000
+    delta_theta=2.0*np.pi/npoints
+    theta=[0.0]
+    delta_s=[0.0]
+    integ_delta_s=[0.0]
+    integ_delta_s_val=0.0
+    for iTheta in range(1,npoints+1):
+        delta_s_val=np.sqrt(ap**2*np.sin(iTheta*delta_theta)**2+ \
+                            bp**2*np.cos(iTheta*delta_theta)**2)
+        theta.append(iTheta*delta_theta)
+        delta_s.append(delta_s_val)
+        integ_delta_s_val = integ_delta_s_val+delta_s_val*delta_theta
+        integ_delta_s.append(integ_delta_s_val)
+    integ_delta_s_norm = []
+    for iEntry in integ_delta_s:
+        integ_delta_s_norm.append(iEntry/integ_delta_s[-1]*2.0*np.pi)    
+    
+    x=[]
+    y=[] 
+    for k in range(npts):
+        t = tmin + (tmax-tmin)*k/npts
+        for lookup_index in range(len(integ_delta_s_norm)):
+            lower=integ_delta_s_norm[lookup_index]
+            upper=integ_delta_s_norm[lookup_index+1]
+            if (t >= lower) and  (t < upper):
+                t2 = theta[lookup_index]
+                break    
+        x.append(x0 + ap*np.cos(t2)*np.cos(phi) - bp*np.sin(t2)*np.sin(phi))
+        y.append(y0 + ap*np.cos(t2)*np.sin(phi) + bp*np.sin(t2)*np.cos(phi))
+
+    return x, y
+
+def sample_from_ellipse(x0, y0, ap, bp, phi, tmin, tmax, npts): 
 
     x=np.empty(npts)
     y=np.empty(npts)
@@ -132,7 +166,9 @@ def get_ellipse_pts(params, npts=100, tmin=0, tmax=2*np.pi, sampling='Standard')
         x = x0 + ap * np.cos(t) * np.cos(phi) - bp * np.sin(t) * np.sin(phi)
         y = y0 + ap * np.cos(t) * np.sin(phi) + bp * np.sin(t) * np.cos(phi)
     elif sampling=='Enhanced':
-        x, y = sample_from_ellipse(x0, y0, ap, bp, phi, tmin, tmax)
+        x, y = sample_from_ellipse(x0, y0, ap, bp, phi, tmin, tmax, npts) 
+    elif sampling=='Even':
+        x, y = sample_from_ellipse_even(x0, y0, ap, bp, phi, tmin, tmax, npts) 
 
     return x, y
 
@@ -143,7 +179,7 @@ def vgplot(x, y, color, alpha, npts, tmin, tmax):
     if tmax-tmin > 2*np.pi - 0.01:
         gap_x=[x[npts-1],x[0]]
         gap_y=[y[npts-1],y[0]]
-        plt.plot(gap_x, gap_y, linewidth=0.5, color=color,alpha=alpha)
+        plt.plot(gap_x, gap_y, linewidth=0.2, color=color,alpha=alpha)
     return()
 
 def main(npts, noise, seed, tmin, tmax, params, sampling):
@@ -152,7 +188,8 @@ def main(npts, noise, seed, tmin, tmax, params, sampling):
 
     # Get points x, y on the exact ellipse and plot them
     x, y = get_ellipse_pts(params, npts, tmin, tmax, sampling)
-    vgplot(x, y,'black', 1, npts, tmin, tmax)
+    if frame == nframes-1:
+        vgplot(x, y,'black', 1, npts, tmin, tmax)
 
     # perturb x, y on the ellipse with some noise, to produce training set
     np.random.seed(seed)
@@ -189,7 +226,7 @@ def main(npts, noise, seed, tmin, tmax, params, sampling):
 #--- Main Part: Initializationa
 
 noise_CDF='Normal'       # options:  'Normal' or 'Uniform'
-sampling='Standard'      # options: 'Enhanced' or 'Standard'
+sampling='Even'      # options: 'Enhanced', 'Standard', 'Even'
 mode='ConfidenceRegion'  # options: 'ConfidenceRegion' or 'FittingCurves' 
 npts = 100                # number of points in training set
 
@@ -219,13 +256,15 @@ for frame in range(0,nframes):
     if mode=='ConfidenceRegion':
         seed=frame      # new set of random numbers for each image 
         noise=0.8       # amount of noise added to to training set
-        tmin=np.pi/4    # training set: ellipse arc starts at tmin
+        # 0 <= tmin < tmax <= 2 pi
+        tmin=0          # training set: ellipse arc starts at tmin
         tmax = 2*np.pi  # training set: ellipse arc ends at tmax
         params = 3, -2.5, 7, 4, np.pi/4 # ellipse parameters
     elif mode=='CurveFitting':
         seed = 100          # same seed (random number generator) for all images
         p=frame/(nframes-1) # assumes nframes > 1
         noise=3*(1-p)*(1-p) # amount of noise added to to training set
+        # 0 <= tmin < tmax <= 2 pi
         tmin=(1-p)*np.pi    # training set: ellipse arc starts at tmin
         tmax = 2*np.pi      # training set: ellipse arc ends at tmax
         params = 4, -3.5, 7, 1+6*(1-p), 2*(p+np.pi/3) # ellipse parameters
