@@ -46,4 +46,3 @@ print('95 %% range for max(θ_A, θ_B): [%+.5f, %+.5f]' %(min_θ_B ,max_θ_B))
 fig, axs = plt.subplots(1, 1,figsize =(10, 7), tight_layout = True)
 axs.hist(W, bins = 60)
 plt.show()
-
