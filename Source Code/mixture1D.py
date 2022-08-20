@@ -60,5 +60,5 @@ plt.hist(W_A, color = "blue", alpha=0.3, edgecolor='black',bins=bins)
 plt.hist(W_B, color = "red", alpha=0.3, edgecolor='black',bins=bins) 
 plt.show()
 # plotting confidence region
-plt.scatter(CR_x,CR_y,s=4) 
+plt.scatter(CR_x,CR_y,s=6,alpha=0.3) 
 plt.show() 
