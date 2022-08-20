@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.stats import norm 
 
 n_A = 400
 n_B = 600
@@ -14,7 +15,7 @@ max_θ_B = -99999999
 CR_x=[]  # confidence region for (best_θ_A, best_θ_A), 1st coordinate  
 CR_y=[]  # confidence region for (best_θ_A, best_θ_A), 2nd coordinate 
 
-for sample in range(5000):
+for sample in range(2):
 
     W_A  = np.random.normal(0.5, 0.3, size=n_A)
     W_B  = np.random.normal(1.0, 0.2, size=n_B)
@@ -29,7 +30,7 @@ for sample in range(5000):
         Error = (1/n) * np.sum(abs( (W - θ_A * Ones) * (W - θ_B * Ones) )**p)
         if Error < minError:
             minError=Error
-            print('Iter = %5d  θ_A = %+.5f  θ_B = %+.5f  Error = %+.5f' %(iter,θ_A ,θ_B, Error))
+            print('Iter = %5d  θ_A = %+.3f  θ_B = %+.3f  Error = %+.3f' %(iter,θ_A ,θ_B, Error))
             best_θ_A = min(θ_A, θ_B)
             best_θ_B = max(θ_A, θ_B)
 
@@ -54,11 +55,15 @@ plt.rc('axes',edgecolor='black') # border color
 plt.rc('xtick', labelsize=7) # font size, x axis  
 plt.rc('ytick', labelsize=7) # font size, y axis
 
-# plotting histogram
+# plotting histogram and density
 bins=np.linspace(min(W), max(W), num=100)
-plt.hist(W_A, color = "blue", alpha=0.3, edgecolor='black',bins=bins) 
-plt.hist(W_B, color = "red", alpha=0.3, edgecolor='black',bins=bins) 
+plt.hist(W_A, color = "blue", alpha=0.3, edgecolor='blue',bins=bins) 
+plt.hist(W_B, color = "red", alpha=0.3, edgecolor='red',bins=bins) 
+plt.plot(bins, 8*norm.pdf(bins,0.5,0.3),color='blue',linewidth=0.6) 
+plt.plot(bins, 12*norm.pdf(bins,1,0.2),color='red',linewidth=0.6) 
 plt.show()
+
 # plotting confidence region
 plt.scatter(CR_x,CR_y,s=6,alpha=0.3) 
 plt.show() 
+
