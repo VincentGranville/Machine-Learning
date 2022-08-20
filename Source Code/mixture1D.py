@@ -43,6 +43,14 @@ for sample in range(40):
 print('95 %% range for min(θ_A, θ_B): [%+.5f, %+.5f]' %(min_θ_A ,max_θ_A))
 print('95 %% range for max(θ_A, θ_B): [%+.5f, %+.5f]' %(min_θ_B ,max_θ_B))
 
-fig, axs = plt.subplots(1, 1,figsize =(10, 7), tight_layout = True)
-axs.hist(W, bins = 60)
+# intialize plotting parameters
+plt.rcParams['axes.linewidth'] = 0.2
+plt.rc('axes',edgecolor='black') # border color
+plt.rc('xtick', labelsize=7) # font size, x axis  
+plt.rc('ytick', labelsize=7) # font size, y axis
+
+# plotting histogram
+bins=np.linspace(min(W), max(W), num=100)
+plt.hist(W_A, color = "blue", alpha=0.3, edgecolor='black',bins=bins) 
+plt.hist(W_B, color = "red", alpha=0.3, edgecolor='black',bins=bins) 
 plt.show()
