@@ -1,12 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.stats import norm 
+from scipy.stats import norm
+from sklearn.cluster import KMeans
 
 n_A = 400
 n_B = 600
 n = n_A + n_B
 Ones = np.ones((n)) # array with 1's
-p = 1  # p = 1 works a lot better than p = 2!
+p_A = 1
+p_B = 1
 np.random.seed(438713)
 min_θ_A =  99999999
 min_θ_B =  99999999
@@ -27,7 +29,7 @@ for sample in range(2):
 
         θ_A = -1 + 3*np.random.rand()
         θ_B = -1 + 3*np.random.rand()
-        Error = (1/n) * np.sum(abs( (W - θ_A * Ones) * (W - θ_B * Ones) )**p)
+        Error = (1/n) * np.sum((abs(W - θ_A * Ones)**p_A) * (abs(W - θ_B * Ones)**p_B))
         if Error < minError:
             minError=Error
             print('Iter = %5d  θ_A = %+.3f  θ_B = %+.3f  Error = %+.3f' %(iter,θ_A ,θ_B, Error))
@@ -44,6 +46,15 @@ for sample in range(2):
         max_θ_B = best_θ_B
     CR_x.append(best_θ_A) 
     CR_y.append(best_θ_B) 
+    
+    # get centers from Kmeans method (for comparison purposes) 
+    V = W.copy()  
+    km = KMeans(n_clusters=2) 
+    km.fit(V.reshape(-1,1))   
+    centroids=km.cluster_centers_  
+    print('Kmeans        θ_A = %+6f  θ_A = %+6f'%(centroids[0,0],centroids[1,0])) 
+    print()
+
     print()
  
 print('95 %% range for min(θ_A, θ_B): [%+.5f, %+.5f]' %(min_θ_A ,max_θ_A))
