@@ -52,9 +52,7 @@ for sample in range(2):
     km = KMeans(n_clusters=2) 
     km.fit(V.reshape(-1,1))   
     centroids=km.cluster_centers_  
-    print('Kmeans        θ_A = %+6f  θ_A = %+6f'%(centroids[0,0],centroids[1,0])) 
-    print()
-
+    print('Kmeans        θ_A = %+3f  θ_A = %+3f'%(centroids[0,0],centroids[1,0])) 
     print()
  
 print('95 %% range for min(θ_A, θ_B): [%+.5f, %+.5f]' %(min_θ_A ,max_θ_A))
