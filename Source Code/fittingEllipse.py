@@ -188,7 +188,7 @@ def main(npts, noise, seed, tmin, tmax, params, sampling):
 
     # Get points x, y on the exact ellipse and plot them
     x, y = get_ellipse_pts(params, npts, tmin, tmax, sampling)
-    if frame == nframes-1:
+    if frame == nframes-1 and mode == 'ConfidenceRegion':
         vgplot(x, y,'black', 1, npts, tmin, tmax)
 
     # perturb x, y on the ellipse with some noise, to produce training set
@@ -204,9 +204,10 @@ def main(npts, noise, seed, tmin, tmax, params, sampling):
 
     # get and print exact and estimated ellipse params
     coeffs = fit_ellipse(x, y) # get quadratic form coeffs
-    print('Exact  x0, y0, ap, bp, phi = : %+.5f %+.5f %+.5f %+.5f %+.5f' % params)
+    print('True ellipse    :  x0, y0, ap, bp, phi = %+.5f %+.5f %+.5f %+.5f %+.5f' % params)
     fitted_params = cart_to_pol(coeffs)  # convert quadratic coeffs to params
-    print('Fitted x0, y0, ap, bp, phi = : %+.5f %+.5f %+.5f %+.5f %+.5f' % fitted_params)
+    print('Estimated values:  x0, y0, ap, bp, phi = %+.5f %+.5f %+.5f %+.5f %+.5f' % fitted_params)
+    print()
 
     # plot training set points in red
     plt.scatter(x, y,s=0.5,color='red',alpha=0.1)   
@@ -248,7 +249,7 @@ for frame in range(0,nframes):
 
     # Global variables: dpi, frame, image
     image='ellipse'+str(frame)+'.png' # filename of image in current frame
-    print(image) # show progress on the screen
+    print("Creating image",image) # show progress on the screen
 
     # params = (x0, y0, ap, bp, phi) : first two coeffs is center of ellipse, last one 
     #  is rotation angle, the two in the middle are the semi-major and semi-minor axes
