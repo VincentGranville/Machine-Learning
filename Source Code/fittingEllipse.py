@@ -210,26 +210,30 @@ def main(npts, noise, seed, tmin, tmax, params, sampling):
     print()
 
     # plot training set points in red
-    plt.scatter(x, y,s=0.5,color='red',alpha=0.1)   
+    if mode == 'ConfidenceRegion':
+      alpha=0.1  # color transparency for Confidence Regions
+    elif mode == 'CurveFitting':
+      alpha=1
+    plt.scatter(x, y,s=0.5,color='red',alpha=alpha)   
  
     # get points on the fitted ellipse and plot them
     x, y = get_ellipse_pts(fitted_params,npts, tmin, tmax, sampling) 
-    vgplot(x, y,'blue', 0.1, npts, tmin, tmax)
+    vgplot(x, y,'blue', alpha, npts, tmin, tmax)
 
     # save plots in a picture [filename is image]
     plt.savefig(image, bbox_inches='tight',dpi=dpi)  
     if ShowImage:
         plt.show()
-    elif mode=='FittingCurves':
+    elif mode=='CurveFitting':
         plt.close() # so, each video frame contains one curve only
     return()
 
 #--- Main Part: Initializationa
 
 noise_CDF='Normal'       # options:  'Normal' or 'Uniform'
-sampling='Even'      # options: 'Enhanced', 'Standard', 'Even'
-mode='ConfidenceRegion'  # options: 'ConfidenceRegion' or 'FittingCurves' 
-npts = 100                # number of points in training set
+sampling='Enhanced'      # options: 'Enhanced', 'Standard', 'Even'
+mode='ConfidenceRegion'  # options: 'ConfidenceRegion' or 'CurveFitting' 
+npts = 25                # number of points in training set
 
 ShowImage = False # set to False for video production
 dpi=100     # image resolution in dpi (100 for gif / 300 for video)
@@ -266,9 +270,9 @@ for frame in range(0,nframes):
         p=frame/(nframes-1) # assumes nframes > 1
         noise=3*(1-p)*(1-p) # amount of noise added to to training set
         # 0 <= tmin < tmax <= 2 pi
-        tmin=(1-p)*np.pi    # training set: ellipse arc starts at tmin
-        tmax = 2*np.pi      # training set: ellipse arc ends at tmax
-        params = 4, -3.5, 7, 1+6*(1-p), 2*(p+np.pi/3) # ellipse parameters
+        tmin= (1-p)*np.pi   # training set: ellipse arc starts at tmin 
+        tmax= 2*np.pi       # training set: ellipse arc ends at tmax  
+        params = 4, -3.5, 7, 1+6*(1-p), 2*(p+np.pi/3) # ellipse parameters 
 
     # call to main function 
     main(npts, noise, seed, tmin, tmax, params, sampling)
@@ -291,4 +295,5 @@ clip.write_videofile('ellipseFitting.mp4')
 
 # output video as gif file 
 gif[0].save('ellipseFitting.gif',save_all=True, append_images=gif[1:],loop=0)  
+
 
