@@ -1,4 +1,4 @@
-The following material is currently available:
+The following material is currently available in the relevant sub-folders:
 
 <b>Python code</b>:
 
