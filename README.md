@@ -12,7 +12,8 @@ The following material is currently available:
 <b>Spreadsheets</b>: 
 
 <ul>
-  <li> <kbd>shapes4.xlsx</kbd>: Described in my article <em>Computer Vision: Shape Classification via Explainable AI</em>, available <a href="https://mltechniques.com/2022/04/20/computer-vision-shape-classification-via-explainable-ai/">here</a>.</li>
+  <li> <kbd>shapes4.xlsx</kbd>: <br>
+    Described in my article <em>Computer Vision: Shape Classification via Explainable AI</em>, available <a href="https://mltechniques.com/2022/04/20/computer-vision-shape-classification-via-explainable-ai/">here</a>.</li>
   <li> <kbd>regression5.xlsx</kbd>, <kbd>regression5_Static.xlsx</kbd>: <br>
     Described in my article <em>Interpretable Machine Learning on Synthetic Data, and Little Known Secrets About Linear Regression</em>, available   <a href="https://mltechniques.com/2022/05/07/little-known-secrets-about-interpretable-machine-learning-on-synthetic-data/">here</a>.</li>
   <li> <kbd>linear2-small.xlsx</kbd>: </li>
