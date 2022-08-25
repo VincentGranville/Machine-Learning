@@ -10,6 +10,9 @@ The following material is currently available:
     Described in my article <em>Machine Learning Cloud Regression: The Swiss Army Knife of Optimization</em>, available <a href="https://mltechniques.com/2022/08/25/machine-learning-cloud-regression-the-swiss-army-knife-of-optimization/">here</a>.</li>
 </ul>
 
+See also <kbd>randomNumbersTesting.py</kbd>, in <a href="https://github.com/VincentGranville/Experimental-Math-Number-Theory/tree/main/Source-Code">this folder</a>. It is part of my article <em>Detecting Subtle Departures from Randomness
+</em> available <a href="https://mltechniques.com/2022/07/23/detecting-subtle-departures-from-randomness/">here</a>. 
+
 <b>Spreadsheets</b>: 
 
 <ul>
