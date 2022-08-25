@@ -1,1 +1,1 @@
-For details and links to the articles where the material is discussed and described, including related code, data and spreadsheets, <a href="https://github.com/VincentGranville/Machine-Learning/blob/main/README.md">follow this link</a>.
+For details and links to the articles where the material is described, including related code, data and spreadsheets, <a href="https://github.com/VincentGranville/Machine-Learning/blob/main/README.md">follow this link</a>.
