@@ -3,7 +3,8 @@ The following material is currently available:
 <b>Python code</b>:
 
 <ul>
-  <li> <kbd>brownian_path.py</kbd>, <kbd>brownian_var.py</kbd>: </li>
+  <li> <kbd>brownian_path.py</kbd>, <kbd>brownian_var.py</kbd>: <br>
+   Described in my article <em>Weird Random Walks: Synthetizing, Testing, and Leveraging Quasi-randomness</em>, available <a href="https://mltechniques.com/2022/08/11/weird-random-walks-synthetizing-testing-and-leveraging-quasi-randomness/">here</a>. </li>
   <li> <kbd>fuzzy.py</kbd>: </li>
   <li> <kbd>fittingCurve.py</kbd>, <kbd>fittingEllipse.py</kbd>, <kbd>mixture1D.py</kbd>: <br>
     Described in my article <em>Machine Learning Cloud Regression: The Swiss Army Knife of Optimization</em>, available <a href="https://mltechniques.com/2022/08/25/machine-learning-cloud-regression-the-swiss-army-knife-of-optimization/">here</a>.</li>
