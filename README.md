@@ -5,7 +5,7 @@ The following material is currently available:
 <ul>
   <li> <kbd>brownian_path.py</kbd>, <kbd>brownian_var.py</kbd>: </li>
   <li> <kbd>fuzzy.py</kbd>: </li>
-  <li> <kbd>fittingCurve.py</kbd>, <kbd>fittingEllipse.py<.kbd>, <kbd>mixture1D.py</kbd>: <br>
+  <li> <kbd>fittingCurve.py</kbd>, <kbd>fittingEllipse.py<./kbd>, <kbd>mixture1D.py</kbd>: <br>
     Described in my article <em>Machine Learning Cloud Regression: The Swiss Army Knife of Optimization</em>, available <a href="https://mltechniques.com/2022/08/25/machine-learning-cloud-regression-the-swiss-army-knife-of-optimization/">here</a>.</li>
 </ul>
 
