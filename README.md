@@ -1,4 +1,4 @@
-The following material is currently available in the relevant sub-folders:
+The following material is currently available in the relevant sub-folders, <a href="https://github.com/VincentGranville/Machine-Learning">here</a>:
 
 <b>Python code</b>:
 
