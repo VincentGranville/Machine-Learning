@@ -22,7 +22,9 @@ See also <kbd>randomNumbersTesting.py</kbd>, in <a href="https://github.com/Vinc
   <li> <kbd>regression5.xlsx</kbd>, <kbd>regression5_Static.xlsx</kbd>: <br>
     Described in my article <em>Interpretable Machine Learning on Synthetic Data, and Little Known Secrets About Linear Regression</em>, available   <a href="https://mltechniques.com/2022/05/07/little-known-secrets-about-interpretable-machine-learning-on-synthetic-data/">here</a>.</li>
   <li> <kbd>linear2-small.xlsx</kbd>: </li>
-  <li> <kbd>fuzzyf2.xlsx</kbd>: </li>
+  <li> <kbd>fuzzyf2.xlsx</kbd>: <br>
+    Described in my article <em>Interpretable Machine Learning: Multipurpose, Model-free, Math-free Fuzzy Regression</em>, available <a href="https://mltechniques.com/2022/05/22/fuzzy-regression-a-generic-model-free-math-free-machine-learning-technique/">here</a>.<br>
+   </li>
 </ul>
 
 Eventually, the purpose is to write a new book containing the material in question as well as some future articles, and integrating the best from my previous book <em>Statistics - New Foundations, Toolbox, and Machine Learning Recipes</em>, available <a href="https://mltechniques.com/resources/">here</a>.
