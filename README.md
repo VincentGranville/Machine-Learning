@@ -14,7 +14,8 @@ The following material is currently available:
 <ul>
   <li> shapes4.xlsx: <br>
   Described in my article <em>Computer Vision: Shape Classification via Explainable AI</em>, available <a href="https://mltechniques.com/2022/04/20/computer-vision-shape-classification-via-explainable-ai/">here</a>.</li>
-  <li> regression5.xlsx, regression5_Static.xlsx: </li>
+  <li> regression5.xlsx, regression5_Static.xlsx: <br>
+    Described in my article <em>Interpretable Machine Learning on Synthetic Data, and Little Known Secrets About Linear Regression</em>, available   <a href="https://mltechniques.com/2022/05/07/little-known-secrets-about-interpretable-machine-learning-on-synthetic-data/">here</a>.</li>
   <li> linear2-small.xlsx: </li>
   <li>fuzzyf2.xlsx: </li>
 </ul>
