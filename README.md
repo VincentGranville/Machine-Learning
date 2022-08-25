@@ -5,7 +5,8 @@ The following material is currently available in the relevant sub-folders, <a hr
 <ul>
   <li> <kbd>brownian_path.py</kbd>, <kbd>brownian_var.py</kbd>: <br>
    Described in my article <em>Weird Random Walks: Synthetizing, Testing, and Leveraging Quasi-randomness</em>, available <a href="https://mltechniques.com/2022/08/11/weird-random-walks-synthetizing-testing-and-leveraging-quasi-randomness/">here</a>. </li>
-  <li> <kbd>fuzzy.py</kbd>: </li>
+  <li> <kbd>fuzzy.py</kbd>: <br>
+    <em>Interpretable Machine Learning: Multipurpose, Model-free, Math-free Fuzzy Regression</em>, available <a href="https://mltechniques.com/2022/05/22/fuzzy-regression-a-generic-model-free-math-free-machine-learning-technique/">here</a>. </li>
   <li> <kbd>fittingCurve.py</kbd>, <kbd>fittingEllipse.py</kbd>, <kbd>mixture1D.py</kbd>: <br>
     Described in my article <em>Machine Learning Cloud Regression: The Swiss Army Knife of Optimization</em>, available <a href="https://mltechniques.com/2022/08/25/machine-learning-cloud-regression-the-swiss-army-knife-of-optimization/">here</a>.</li>
 </ul>
@@ -24,4 +25,4 @@ See also <kbd>randomNumbersTesting.py</kbd>, in <a href="https://github.com/Vinc
   <li> <kbd>fuzzyf2.xlsx</kbd>: </li>
 </ul>
 
-Eventually, the purpose is to write a new book containing the material in question as well as some future articles, and integrating the best from my previous book <em>Statistics - New Foundations, Toolbox, and Machine Learning Recipes</em> available <a href="https://mltechniques.com/resources/">here</a>.
+Eventually, the purpose is to write a new book containing the material in question as well as some future articles, and integrating the best from my previous book <em>Statistics - New Foundations, Toolbox, and Machine Learning Recipes</em>, available <a href="https://mltechniques.com/resources/">here</a>.
