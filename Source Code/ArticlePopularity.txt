@@ -1,0 +1,46 @@
+1.	17 short tutorials all data scientists should read and practice (2) - 2/15/2014
+2.	How to Become a Data Scientist (39) - 8/27/2014
+3.	DSC weekly digest (1) - 6/20/2013
+4.	38 Seminal Articles Every Data Scientist Should Read (34) - 8/15/2014
+5.	10 types of regressions. Which one to use? (22) - 7/21/2014
+6.	Data Science Cheat Sheet (36) - 8/1/2014
+7.	16 analytic disciplines compared to data science (31) - 7/14/2014
+8.	Data science book (6) - 11/23/2013
+9.	66 job interview questions for data scientists (4) - 2/13/2013
+10.	One Page R: A Survival Guide to Data Science with R (14) - 2/14/2014
+11.	Six categories of Data Scientists (11) - 1/16/2014
+12.	Data scientist core skills (7) - 8/27/2013
+13.	Update about our Data Science Apprenticeship (5) - 3/10/2013
+14.	Our Data Science Apprenticeship is Now Live (38) - 5/22/2014
+15.	What your state is the worst at? (3) - 1/31/2011
+16.	How to detect spurious correlations, and how to find the real ones (41) - 5/22/2014
+17.	The best kept secret about linear and logistic regression (32) - 3/13/2014
+18.	6000 Companies Hiring Data Scientists (24) - 12/29/2013
+19.	More than 100 data science, analytics, big data, visualization books (19) - 11/6/2013
+20.	Fast clustering algorithms for massive datasets (9) - 2/23/2013
+21.	Batch vs. Real Time Data Processing (17) - 8/13/2013
+22.	From the trenches: 360-degree data science (40) - 3/27/2014
+23.	Salary history and career path of a data scientist (37) - 2/19/2014
+24.	Data scientists making \$300,000 a year (8) - 11/29/2012
+25.	Data Science eBook - 2nd Edition (15) - 5/19/2013
+26.	Practical illustration of Map-Reduce (Hadoop-style), on real data (35) - 1/25/2014
+27.	Salary surveys for data scientists and related job titles (23) - 10/10/2013
+28.	16 resources to learn and understand Hadoop (44) - 4/18/2014
+29.	Big data sets available for free (33) - 12/30/2013
+30.	BI vs. Big Data vs. Data Analytics By Example (21) - 8/25/2013
+31.	Hadoop vs. NoSql vs. Sql vs. NewSql By Example (27) - 9/8/2013
+32.	Data Scientists vs. Data Engineers (20) - 7/2/2013
+33.	The Curse of Big Data (16) - 1/5/2013
+34.	Jackknife logistic and linear regression for clustering and predict... (46) - 3/19/2014
+35.	What MapReduce can't do (18) - 1/31/2013
+36.	The 8 worst predictive modeling techniques (13) - 9/13/2012
+37.	Berkeley course on Data Science (10) - 3/4/2012
+38.	Why Companies can't find analytic talent (43) - 1/17/2014
+39.	New, fast Excel to process billions of rows via the cloud (28) - 4/16/2013
+40.	How much does a data scientist make at Facebook? (25) - 3/12/2013
+41.	Fake data science (29) - 2/11/2013
+42.	Logit vs Probit Regression (12) - 2/19/2009
+43.	R Tutorial for Beginners: A Quick Start-Up Kit (42) - 10/24/2013
+44.	How to detect a pattern? Problem and solution (26) - 9/28/2011
+45.	Job titles for data scientists (45) - 6/3/2013
+46.	New, state-of-the-art random number generator: simple, strong and fast (30) - 9/11/2011
