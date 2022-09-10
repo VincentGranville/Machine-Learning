@@ -98,9 +98,9 @@ for idx in List:
     idlist = list_id[idx]
     nidx += 1
     # below values are chosen based on heuristics and experimenting
-    if ((n > 3) and (n < 8) and (Min > 6.9) and (Avg > 7.6)) or \
-         ((n >= 8) and (n < 16) & (Min > 6.7) and (Avg > 7.4)) or \
-         ((n >= 16) and (n < 200) & (Min > 6.1) and (Avg > 7.2)):
+    if n > 3 and n < 8 and Min > 6.9 and Avg > 7.6 or \
+          n >= 8 and n < 16 and Min > 6.7 and Avg > 7.4 or \
+          n >= 16 and n < 200 and Min > 6.1 and Avg > 7.2:
         OUT.write(idx + '\t' + str(n) + '\t' + str(Avg) + '\t' + str(Min) + '\t' + str(Max) + '\t' + str(idlist) + '\n')
         nidx_Good += 1
         for ID in idlist:
@@ -153,4 +153,4 @@ print ("Error Rate: ", errorRate)
 print ("Number of feature values: ", nidx, " (marked as good: ", nidx_Good,")", sep = "")
 print ("Aggregation factor:", aggregationFactor)
 
-print("Execution time: " + str(time.time() - start) +"s")     
+print("Execution time: " + str(time.time() - start) +"s")
