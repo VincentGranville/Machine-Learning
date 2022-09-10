@@ -121,7 +121,7 @@ FalsePositive = 0
 FalseNegative = 0
 for ID in range(nArticles):
     pv = articlepv[ID]
-    if articleFlag[ID] is "GOOD":
+    if articleFlag[ID] == "GOOD":
         n1 += 1
         pv1 += pv
         if pv < pv_threshold:
