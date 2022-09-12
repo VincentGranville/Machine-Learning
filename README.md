@@ -1,4 +1,4 @@
-The following material is currently available in the relevant sub-folders, <a href="https://github.com/VincentGranville/Machine-Learning">here</a>:
+The following material is currently available in the relevant sub-folders, <a href="https://github.com/VincentGranville/Machine-Learning">here</a>. Eventually, the purpose is to write two new books containing the material in question as well as some future articles, and integrating the best from my previous book <em>Statistics - New Foundations, Toolbox, and Machine Learning Recipes</em>, available <a href="https://mltechniques.com/resources/">here</a>. At this point, the first book <em>Intuitive Machine Learning</em> is almost finished (to be published in October 2022) and will be used as core material for my upcoming classes on the subject.
 
 <b>Python code</b>:
 
@@ -23,4 +23,4 @@ See also <kbd>randomNumbersTesting.py</kbd>, in <a href="https://github.com/Vinc
    </li>
 </ul>
 
-Eventually, the purpose is to write two new books containing the material in question as well as some future articles, and integrating the best from my previous book <em>Statistics - New Foundations, Toolbox, and Machine Learning Recipes</em>, available <a href="https://mltechniques.com/resources/">here</a>. At this point, the first book <em>Intuitive Machine Learning</em> is almost finished (to be published in October 2022) and will be used as core material for my upcoming classes on the subject.
+
