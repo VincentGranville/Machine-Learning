@@ -1,4 +1,4 @@
-This repository contains the material related to my book <b>Intuitive Machine Learning</b>, available <a href="https://mltechniques.com/product/intuitive-machine-learning/">here</a>. The table of contents is available <a href="https://github.com/VincentGranville/Machine-Learning/blob/main/MLbook-extract.pdf">here</a>. 
+This repository contains the material related to my book <b>Intuitive Machine Learning</b>, available <a href="https://mltechniques.com/product/intuitive-machine-learning/">here</a>. The table of contents is available <a href="https://github.com/VincentGranville/Machine-Learning/blob/main/MLbook-extract.pdf">here</a>. To access the main folder, click <a href="https://github.com/VincentGranville/Machine-Learning">here</a>.
 
 <b>Python code</b>:
 
