@@ -29,7 +29,9 @@ articleTitle = list() # Lists to hold article id wise title name and pv
 articlepv = list()
 sum_pv = 0
 ID = 0
-in_file = open("HDTdata4.txt", "r")
+in_file = open("HDTdata4.txt", "r", encoding="latin-1")  # Specify the correct encoding
+
+
 
 for line in in_file:
     if ID == 0: # excluding first line as it is header
