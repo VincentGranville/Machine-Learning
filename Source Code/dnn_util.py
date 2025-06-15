@@ -71,13 +71,26 @@ def f1(params, x, args = ""):
     return(z)
 
 def f2(params, x, args=""):
-    # Dirichet eta function, real part with fixed sigma
+    # Dirichet eta function, real part with fixed sigma, partial parameter matrix
     layers, nfeatures = params.shape
     sigma = params[0, 0]
     phi = params[1, 0]
     theta = phi/(1-phi)
     z = 0
     for k in range(nfeatures):
+        z += params[2, k] * (-1)**k * np.cos((x+theta)*np.log(k+1)) / (k+1)**(sigma)
+    if args['equalize']:
+        z = z - np.min(z)
+    return(z)
+
+def f2x(params, x, args=""):
+    # Generalized version of f2 with full parameter matrix
+    layers, nfeatures = params.shape
+    z = 0
+    for k in range(nfeatures):
+        sigma = params[0, k]
+        phi = params[1, k]
+        theta = phi/(1-phi)
         z += params[2, k] * (-1)**k * np.cos((x+theta)*np.log(k+1)) / (k+1)**(sigma)
     if args['equalize']:
         z = z - np.min(z)
@@ -240,7 +253,7 @@ def partial_derivatives(loss, f, params_estimated, y, x,
     for index, value in np.ndenumerate(params_estimated): 
         if 0 < value < 1:  
             # handle situation where params is out of accepted range
-            params_estimated[index] = params_new[index]            
+            params_estimated[index] = params_new[index]     
     return(params_estimated)
 
 def gradient_descent(epochs, learning_rate, layers, nfeatures, f, y, x, 
