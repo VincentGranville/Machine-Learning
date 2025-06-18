@@ -33,6 +33,7 @@ params[1, :] = np.random.uniform(0.00, 0.95, nfeatures)
 params[2, :] = np.random.uniform(0.00, 1.00, nfeatures)  
 x = np.random.uniform(0, 50, n)   
 args['equalize'] = True
+args['ghost_params'] = ()
 
 #--- Adding noise to response y 
 
@@ -78,3 +79,7 @@ corr_refi = np.min(map_corr) + (np.max(map_corr)-np.min(corr_refi))*corr_refi
 contour = plt.tricontourf(tri_refi, corr_refi, levels = 40, cmap = 'terrain')
 plt.colorbar(contour)
 plt.show()
+
+#################3 use plots alreadt created // use my interpol method
+#########################3 starting with avg true param per layer can work
+#########################  50 epochs --> to see what constant p0, p1, p2 quickly lead to good starting point  
