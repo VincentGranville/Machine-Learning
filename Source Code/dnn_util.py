@@ -86,12 +86,14 @@ def f2(params, x, args=""):
 def f2x(params, x, args=""):
     # Generalized version of f2 with full parameter matrix
     layers, nfeatures = params.shape
+    ghost_params = args['ghost_params']
     z = 0
     for k in range(nfeatures):
         sigma = params[0, k]
         phi = params[1, k]
         theta = phi/(1-phi)
-        z += params[2, k] * (-1)**k * np.cos((x+theta)*np.log(k+1)) / (k+1)**(sigma)
+        if k not in ghost_params:
+            z += params[2, k] * (-1)**k * np.cos((x+theta)*np.log(k+1)) / (k+1)**(sigma)
     if args['equalize']:
         z = z - np.min(z)
     return(z)
@@ -171,7 +173,10 @@ def loss(f, params_estimated, y, x, mode, args=""):
 
 def init_L2_descent(f, y, x, L_error, layers, nfeatures, args):
 
-      params_init = np.full((layers, nfeatures), 0.5)
+      if 'params_init' in args:
+          params_init = args['params_init']
+      else:
+          params_init = np.full((layers, nfeatures), 0.5)
       init_loss = loss(f, params_init, y, x, L_error, args)
       args['params_init'] = params_init 
       args['init_loss'] = init_loss
