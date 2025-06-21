@@ -308,8 +308,9 @@ def summary(x, y, params, params_estimated, f, L_error, history, temperature, ar
 def visu(history, y, x, f, params_estimated, params, args):  
 
     xvalues = np.arange(len(history))
-    plt.plot(xvalues, history, linewidth = 0.6, c='gold')
-    plt.show()
+    if len(history) > 20:
+        plt.plot(xvalues, history, linewidth = 0.6, c='gold')
+        plt.show()
     y_estimated = f(params_estimated, x, args)    
     plt.scatter(y, y_estimated, s = 0.8, c='gray')
     ymin = np.min(y)
